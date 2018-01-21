@@ -1,5 +1,6 @@
 from trezorlib.client import proto, BaseClient, ProtocolMixin
-from .clientbase import TrezorClientBase
+from plguins.trezor.clientbase import TrezorClientBase
+
 
 class TrezorClient(TrezorClientBase, ProtocolMixin, BaseClient):
     def __init__(self, transport, handler, plugin):

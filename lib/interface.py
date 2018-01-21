@@ -33,13 +33,13 @@ import traceback
 
 import requests
 
-from .util import print_error
+from lib.util import print_error
 
 ca_path = requests.certs.where()
 
-from . import util
-from . import x509
-from . import pem
+from lib import util
+from lib import x509
+from lib import pem
 
 
 def Connection(server, queue, config_path):
@@ -390,7 +390,7 @@ def _match_hostname(name, val):
 
 
 def test_certificates():
-    from .simple_config import SimpleConfig
+    from lib.simple_config import SimpleConfig
     config = SimpleConfig()
     mydir = os.path.join(config.path, "certs")
     certs = os.listdir(mydir)

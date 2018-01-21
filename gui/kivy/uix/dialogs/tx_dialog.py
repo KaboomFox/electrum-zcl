@@ -5,9 +5,9 @@ from kivy.lang import Builder
 from kivy.clock import Clock
 from kivy.uix.label import Label
 
-from electrum_gui.kivy.i18n import _
+from gui.kivy.i18n import _
 from datetime import datetime
-from electrum.util import InvalidPassword
+from lib.util import InvalidPassword
 
 Builder.load_string('''
 
@@ -129,7 +129,7 @@ class TxDialog(Factory.Popup):
         self.ids.output_list.update(self.tx.outputs())
 
     def do_rbf(self):
-        from .bump_fee_dialog import BumpFeeDialog
+        from gui.kivy.uix.dialogs.bump_fee_dialog import BumpFeeDialog
         is_relevant, is_mine, v, fee = self.wallet.get_wallet_delta(self.tx)
         size = self.tx.estimated_size()
         d = BumpFeeDialog(self.app, fee, size, self._do_rbf)
@@ -171,7 +171,7 @@ class TxDialog(Factory.Popup):
         self.app.broadcast(self.tx)
 
     def show_qr(self):
-        from electrum.bitcoin import base_encode, bfh
+        from lib.bitcoin import base_encode, bfh
         text = bfh(str(self.tx))
         text = base_encode(text, base=43)
         self.app.qr_dialog(_("Raw Transaction"), text)

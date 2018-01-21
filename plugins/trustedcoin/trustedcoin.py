@@ -30,16 +30,16 @@ import json
 from urllib.parse import urljoin
 from urllib.parse import quote
 
-import electrum
-from electrum import bitcoin
-from electrum import keystore
-from electrum.bitcoin import *
-from electrum.mnemonic import Mnemonic
-from electrum import version
-from electrum.wallet import Multisig_Wallet, Deterministic_Wallet
-from electrum.i18n import _
-from electrum.plugins import BasePlugin, hook
-from electrum.util import NotEnoughFunds
+import lib
+from lib import bitcoin
+from lib import keystore
+from lib.bitcoin import *
+from lib.mnemonic import Mnemonic
+from lib import version
+from lib.wallet import Multisig_Wallet, Deterministic_Wallet
+from lib.i18n import _
+from lib.plugins import BasePlugin, hook
+from lib.util import NotEnoughFunds
 
 # signing_xpub is hardcoded so that the wallet can be restored from seed, without TrustedCoin's server
 signing_xpub = "xpub661MyMwAqRbcGnMkaTx2594P9EDuiEqMq25PM2aeG6UmwzaohgA6uDmNsvSUV8ubqwA3Wpste1hg69XHgjUuCD5HLcEp2QPzyV1HMrPppsL"
@@ -204,7 +204,7 @@ class Wallet_2fa(Multisig_Wallet):
         return get_user_id(self.storage)
 
     def get_max_amount(self, config, inputs, recipient, fee):
-        from electrum.transaction import Transaction
+        from lib.transaction import Transaction
         sendable = sum(map(lambda x:x['value'], inputs))
         for i in inputs:
             self.add_input_info(i)
@@ -390,8 +390,8 @@ class TrustedCoinPlugin(BasePlugin):
 
     @classmethod
     def get_xkeys(self, seed, passphrase, derivation):
-        from electrum.mnemonic import Mnemonic
-        from electrum.keystore import bip32_root, bip32_private_derivation
+        from lib.mnemonic import Mnemonic
+        from lib.keystore import bip32_root, bip32_private_derivation
         bip32_seed = Mnemonic.mnemonic_to_seed(seed, passphrase)
         xprv, xpub = bip32_root(bip32_seed, 'standard')
         xprv, xpub = bip32_private_derivation(xprv, "m/", derivation)
@@ -432,7 +432,7 @@ class TrustedCoinPlugin(BasePlugin):
               "your wallet.  If you generated your seed on an offline "
               'computer, click on "%s" to close this window, move your '
               "wallet file to an online computer, and reopen it with "
-              "Electrum.") % _('Cancel'),
+              "lib.") % _('Cancel'),
             _('If you are online, click on "%s" to continue.') % _('Next')
         ]
         msg = '\n\n'.join(msg)

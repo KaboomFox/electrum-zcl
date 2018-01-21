@@ -14,12 +14,12 @@ from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.utils import platform
 
-from electrum.base_wizard import BaseWizard
+from lib.base_wizard import BaseWizard
 
 
-from . import EventsDialog
-from ...i18n import _
-from .password_dialog import PasswordDialog
+from gui.kivy.uix.dialogs import EventsDialog
+from gui.kivy.i18n import _
+from gui.kivy.uix.dialogs.password_dialog import PasswordDialog
 
 # global Variables
 is_test = (platform == "linux")
@@ -28,7 +28,7 @@ test_xpub = "xpub661MyMwAqRbcEbvVtRRSjqxVnaWVUMewVzMiURAKyYratih4TtBpMypzzefmv8z
 
 Builder.load_string('''
 #:import Window kivy.core.window.Window
-#:import _ electrum_gui.kivy.i18n._
+#:import _ gui.kivy.i18n._
 
 
 <WizardTextInput@TextInput>
@@ -537,7 +537,7 @@ class ShowSeedDialog(WizardDialog):
             self._back = _back = partial(self.ids.back.dispatch, 'on_release')
 
     def options_dialog(self):
-        from .seed_options import SeedOptionsDialog
+        from gui.kivy.uix.dialogs.seed_options import SeedOptionsDialog
         def callback(status):
             self.ext = status
         d = SeedOptionsDialog(self.ext, callback)
@@ -559,8 +559,8 @@ class RestoreSeedDialog(WizardDialog):
     def __init__(self, wizard, **kwargs):
         super(RestoreSeedDialog, self).__init__(wizard, **kwargs)
         self._test = kwargs['test']
-        from electrum.mnemonic import Mnemonic
-        from electrum.old_mnemonic import words as old_wordlist
+        from lib.mnemonic import Mnemonic
+        from lib.old_mnemonic import words as old_wordlist
         self.words = set(Mnemonic('en').wordlist).union(set(old_wordlist))
         self.ids.text_input_seed.text = test_seed if is_test else ''
         self.message = _('Please type your seed phrase using the virtual keyboard.')
@@ -568,7 +568,7 @@ class RestoreSeedDialog(WizardDialog):
         self.ext = False
 
     def options_dialog(self):
-        from .seed_options import SeedOptionsDialog
+        from gui.kivy.uix.dialogs.seed_options import SeedOptionsDialog
         def callback(status):
             self.ext = status
         d = SeedOptionsDialog(self.ext, callback)
@@ -690,7 +690,7 @@ class ShowXpubDialog(WizardDialog):
         self.app.do_share(self.xpub, _("Master Public Key"))
 
     def do_qr(self):
-        from .qr_dialog import QRDialog
+        from gui.kivy.uix.dialogs.qr_dialog import QRDialog
         popup = QRDialog(_("Master Public Key"), self.xpub, True)
         popup.open()
 

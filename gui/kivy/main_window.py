@@ -7,15 +7,15 @@ import traceback
 from decimal import Decimal
 import threading
 
-import electrum
-from electrum.bitcoin import TYPE_ADDRESS
-from electrum import WalletStorage, Wallet
-from electrum_gui.kivy.i18n import _
-from electrum.paymentrequest import InvoiceStore
-from electrum.util import profiler, InvalidPassword
-from electrum.plugins import run_hook
-from electrum.util import format_satoshis, format_satoshis_plain
-from electrum.paymentrequest import PR_UNPAID, PR_PAID, PR_UNKNOWN, PR_EXPIRED
+import lib
+from lib.bitcoin import TYPE_ADDRESS
+from lib import WalletStorage, Wallet
+from gui.kivy.i18n import _
+from lib.paymentrequest import InvoiceStore
+from lib.util import profiler, InvalidPassword
+from lib.plugins import run_hook
+from lib.util import format_satoshis, format_satoshis_plain
+from lib.paymentrequest import PR_UNPAID, PR_PAID, PR_UNKNOWN, PR_EXPIRED
 
 from kivy.app import App
 from kivy.core.window import Window
@@ -30,14 +30,14 @@ from kivy.metrics import inch
 from kivy.lang import Builder
 
 ## lazy imports for factory so that widgets can be used in kv
-#Factory.register('InstallWizard', module='electrum_gui.kivy.uix.dialogs.installwizard')
-#Factory.register('InfoBubble', module='electrum_gui.kivy.uix.dialogs')
-#Factory.register('OutputList', module='electrum_gui.kivy.uix.dialogs')
-#Factory.register('OutputItem', module='electrum_gui.kivy.uix.dialogs')
+#Factory.register('InstallWizard', module='gui.kivy.uix.dialogs.installwizard')
+#Factory.register('InfoBubble', module='gui.kivy.uix.dialogs')
+#Factory.register('OutputList', module='gui.kivy.uix.dialogs')
+#Factory.register('OutputItem', module='gui.kivy.uix.dialogs')
 
-from .uix.dialogs.installwizard import InstallWizard
-from .uix.dialogs import InfoBubble
-from .uix.dialogs import OutputList, OutputItem
+from gui.uix.dialogs.installwizard import InstallWizard
+from gui.uix.dialogs import InfoBubble
+from gui.uix.dialogs import OutputList, OutputItem
 
 #from kivy.core.window import Window
 #Window.softinput_mode = 'below_target'
@@ -55,7 +55,7 @@ from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.label import Label
 from kivy.core.clipboard import Clipboard
 
-Factory.register('TabbedCarousel', module='electrum_gui.kivy.uix.screens')
+Factory.register('TabbedCarousel', module='lib..kivy.uix.screens')
 
 # Register fonts without this you won't be able to use bold/italic...
 # inside markup.
@@ -67,7 +67,7 @@ Label.register('Roboto',
                'gui/kivy/data/fonts/Roboto-Bold.ttf')
 
 
-from electrum.util import base_units
+from lib.util import base_units
 
 
 class ElectrumWindow(App):
@@ -92,10 +92,10 @@ class ElectrumWindow(App):
         self.auto_connect = not self.auto_connect
 
     def choose_server_dialog(self, popup):
-        from .uix.dialogs.choice_dialog import ChoiceDialog
+        from gui.uix.dialogs.choice_dialog import ChoiceDialog
         protocol = 's'
         def cb2(host):
-            from electrum.bitcoin import NetworkConstants
+            from lib.bitcoin import NetworkConstants
             pp = servers.get(host, NetworkConstants.DEFAULT_PORTS)
             port = pp.get(protocol, '')
             popup.ids.host.text = host
@@ -104,7 +104,7 @@ class ElectrumWindow(App):
         ChoiceDialog(_('Choose a server'), sorted(servers), popup.ids.host.text, cb2).open()
 
     def choose_blockchain_dialog(self, dt):
-        from .uix.dialogs.choice_dialog import ChoiceDialog
+        from gui.kivy.uix.dialogs.choice_dialog import ChoiceDialog
         chains = self.network.get_blockchains()
         def cb(name):
             for index, b in self.network.blockchains.items():
@@ -295,7 +295,7 @@ class ElectrumWindow(App):
             self.send_screen.do_clear()
 
     def on_qr(self, data):
-        from electrum.bitcoin import base_decode, is_address
+        from lib.bitcoin import base_decode, is_address
         data = data.strip()
         if is_address(data):
             self.set_URI(data)
@@ -304,8 +304,8 @@ class ElectrumWindow(App):
             self.set_URI(data)
             return
         # try to decode transaction
-        from electrum.transaction import Transaction
-        from electrum.util import bh2u
+        from lib.transaction import Transaction
+        from lib.util import bh2u
         try:
             text = bh2u(base_decode(data, None, base=43))
             tx = Transaction(text)
@@ -342,7 +342,7 @@ class ElectrumWindow(App):
         self.receive_screen.screen.address = addr
 
     def show_pr_details(self, req, status, is_invoice):
-        from electrum.util import format_time
+        from lib.util import format_time
         requestor = req.get('requestor')
         exp = req.get('exp')
         memo = req.get('memo')
@@ -364,7 +364,7 @@ class ElectrumWindow(App):
         popup.open()
 
     def show_addr_details(self, req, status):
-        from electrum.util import format_time
+        from lib.util import format_time
         fund = req.get('fund')
         isaddr = 'y'
         popup = Builder.load_file('gui/kivy/uix/ui_screens/invoice.kv')
@@ -377,7 +377,7 @@ class ElectrumWindow(App):
         popup.open()
 
     def qr_dialog(self, title, data, show_text=False):
-        from .uix.dialogs.qr_dialog import QRDialog
+        from gui.kivy.uix.dialogs.qr_dialog import QRDialog
         popup = QRDialog(title, data, show_text)
         popup.open()
 
@@ -387,7 +387,7 @@ class ElectrumWindow(App):
         from jnius import autoclass, cast
         from android import activity
         PythonActivity = autoclass('org.kivy.android.PythonActivity')
-        SimpleScannerActivity = autoclass("org.electrum.qr.SimpleScannerActivity")
+        SimpleScannerActivity = autoclass("org.lib.qr.SimpleScannerActivity")
         Intent = autoclass('android.content.Intent')
         intent = Intent(PythonActivity.mActivity, SimpleScannerActivity)
 
@@ -533,7 +533,7 @@ class ElectrumWindow(App):
             return True
 
     def settings_dialog(self):
-        from .uix.dialogs.settings import SettingsDialog
+        from gui.kivo.uix.dialogs.settings import SettingsDialog
         if self._settings_dialog is None:
             self._settings_dialog = SettingsDialog(self)
         self._settings_dialog.update()
@@ -543,7 +543,7 @@ class ElectrumWindow(App):
         if name == 'settings':
             self.settings_dialog()
         elif name == 'wallets':
-            from .uix.dialogs.wallets import WalletDialog
+            from gui.kivy.uix.dialogs.wallets import WalletDialog
             d = WalletDialog()
             d.open()
         else:
@@ -552,7 +552,7 @@ class ElectrumWindow(App):
 
     @profiler
     def init_ui(self):
-        ''' Initialize The Ux part of electrum. This function performs the basic
+        ''' Initialize The Ux part of lib. This function performs the basic
         tasks of setting up the ui.
         '''
         #from weakref import ref
@@ -563,9 +563,9 @@ class ElectrumWindow(App):
 
         #setup lazy imports for mainscreen
         Factory.register('AnimatedPopup',
-                         module='electrum_gui.kivy.uix.dialogs')
+                         module='gui.kivy.uix.dialogs')
         Factory.register('QRCodeWidget',
-                         module='electrum_gui.kivy.uix.qrcodewidget')
+                         module='gui.kivy.uix.qrcodewidget')
 
         # preload widgets. Remove this if you want to load the widgets on demand
         #Cache.append('electrum_widgets', 'AnimatedPopup', Factory.AnimatedPopup())
@@ -581,7 +581,7 @@ class ElectrumWindow(App):
         self.receive_screen = None
         self.requests_screen = None
         self.address_screen = None
-        self.icon = "icons/electrum.png"
+        self.icon = "icons/lib.png"
         self.tabs = self.root.ids['tabs']
 
     def update_interfaces(self, dt):
@@ -773,7 +773,7 @@ class ElectrumWindow(App):
         info_bubble.show(pos, duration, width, modal=modal, exit=exit)
 
     def tx_dialog(self, tx):
-        from .uix.dialogs.tx_dialog import TxDialog
+        from gui.kivo.uix.dialogs.tx_dialog import TxDialog
         d = TxDialog(self, tx)
         d.open()
 
@@ -812,7 +812,7 @@ class ElectrumWindow(App):
             self.show_info(_('Cannot broadcast transaction') + ':\n' + _('Not connected'))
 
     def description_dialog(self, screen):
-        from .uix.dialogs.label_dialog import LabelDialog
+        from gui.kivo.uix.dialogs.label_dialog import LabelDialog
         text = screen.message
         def callback(text):
             screen.message = text
@@ -821,7 +821,7 @@ class ElectrumWindow(App):
 
     @profiler
     def amount_dialog(self, screen, show_max):
-        from .uix.dialogs.amount_dialog import AmountDialog
+        from gui.kivo.uix.dialogs.amount_dialog import AmountDialog
         amount = screen.amount
         if amount:
             amount, u = str(amount).split()
@@ -838,7 +838,7 @@ class ElectrumWindow(App):
             f(*(args + (None,)))
 
     def delete_wallet(self):
-        from .uix.dialogs.question import Question
+        from gui.kiyo.uix.dialogs.question import Question
         basename = os.path.basename(self.wallet.storage.path)
         d = Question(_('Delete wallet?') + '\n' + basename, self._delete_wallet)
         d.open()
@@ -911,7 +911,7 @@ class ElectrumWindow(App):
             self.show_error("PIN numbers do not match")
 
     def password_dialog(self, msg, f, args):
-        from .uix.dialogs.password_dialog import PasswordDialog
+        from gui.kivo.uix.dialogs.password_dialog import PasswordDialog
         def callback(pw):
             Clock.schedule_once(lambda x: f(*(args + (pw,))), 0.1)
         if self._password_dialog is None:

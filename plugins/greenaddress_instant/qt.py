@@ -30,8 +30,8 @@ import requests
 
 from PyQt5.QtWidgets import QApplication, QPushButton
 
-from electrum.plugins import BasePlugin, hook
-from electrum.i18n import _
+from lib.plugins import BasePlugin, hook
+from lib.i18n import _
 
 
 

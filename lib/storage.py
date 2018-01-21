@@ -33,10 +33,10 @@ import pbkdf2, hmac, hashlib
 import base64
 import zlib
 
-from .util import PrintError, profiler
-from .plugins import run_hook, plugin_loaders
-from .keystore import bip44_derivation
-from . import bitcoin
+from lib.util import PrintError, profiler
+from lib.plugins import run_hook, plugin_loaders
+from lib.keystore import bip44_derivation
+from lib import bitcoin
 
 
 # seed_version is now used for the version of the wallet file

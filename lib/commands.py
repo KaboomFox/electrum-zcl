@@ -33,14 +33,14 @@ import base64
 from functools import wraps
 from decimal import Decimal
 
-from .import util
-from .util import bfh, bh2u, format_satoshis
-from .import bitcoin
-from .bitcoin import is_address,  hash_160, COIN, TYPE_ADDRESS
-from .i18n import _
-from .transaction import Transaction, multisig_script
-from .paymentrequest import PR_PAID, PR_UNPAID, PR_UNKNOWN, PR_EXPIRED
-from .plugins import run_hook
+from lib import util
+from lib.util import bfh, bh2u, format_satoshis
+from lib import bitcoin
+from lib.bitcoin import is_address,  hash_160, COIN, TYPE_ADDRESS
+from lib.i18n import _
+from lib.transaction import Transaction, multisig_script
+from lib.paymentrequest import PR_PAID, PR_UNPAID, PR_UNKNOWN, PR_EXPIRED
+from lib.plugins import run_hook
 
 known_commands = {}
 
@@ -161,7 +161,7 @@ class Commands:
     @command('')
     def make_seed(self, nbits=132, entropy=1, language=None, segwit=False):
         """Create a seed"""
-        from .mnemonic import Mnemonic
+        from lib.mnemonic import Mnemonic
         t = 'segwit' if segwit else 'standard'
         s = Mnemonic(language).make_seed(t, nbits, custom_entropy=entropy)
         return s
@@ -169,7 +169,7 @@ class Commands:
     @command('')
     def check_seed(self, seed, entropy=1, language=None):
         """Check that a seed was generated with given entropy"""
-        from .mnemonic import Mnemonic
+        from lib.mnemonic import Mnemonic
         return Mnemonic(language).check_seed(seed, entropy)
 
     @command('n')
@@ -343,8 +343,8 @@ class Commands:
 
     @command('')
     def version(self):
-        """Return the version of electrum."""
-        from .version import ELECTRUM_VERSION
+        """Return the version of lib."""
+        from lib.version import ELECTRUM_VERSION
         return ELECTRUM_VERSION
 
     @command('w')
@@ -388,7 +388,7 @@ class Commands:
         """Sweep private keys. Returns a transaction that spends UTXOs from
         privkey to a destination address. The transaction is not
         broadcasted."""
-        from .wallet import sweep
+        from lib.wallet import sweep
         tx_fee = satoshis(fee)
         privkeys = privkey.split()
         self.nocheck = nocheck
@@ -422,7 +422,7 @@ class Commands:
 
         coins = self.wallet.get_spendable_coins(domain, self.config)
         tx = self.wallet.make_unsigned_transaction(coins, final_outputs, self.config, fee, change_addr)
-        if locktime != None: 
+        if locktime != None:
             tx.locktime = locktime
         if rbf:
             tx.set_rbf(True)
@@ -731,7 +731,7 @@ command_options = {
 
 
 # don't use floats because of rounding errors
-from .transaction import tx_from_str
+from lib.transaction import tx_from_str
 json_loads = lambda x: json.loads(x, parse_float=lambda x: str(Decimal(x)))
 arg_types = {
     'num': int,
@@ -754,10 +754,10 @@ config_variables = {
         'requests_dir': 'directory where a bip70 file will be written.',
         'ssl_privkey': 'Path to your SSL private key, needed to sign the request.',
         'ssl_chain': 'Chain of SSL certificates, needed for signed requests. Put your certificate at the top and the root CA at the end',
-        'url_rewrite': 'Parameters passed to str.replace(), in order to create the r= part of bitcoin: URIs. Example: \"(\'file:///var/www/\',\'https://electrum.org/\')\"',
+        'url_rewrite': 'Parameters passed to str.replace(), in order to create the r= part of bitcoin: URIs. Example: \"(\'file:///var/www/\',\'https://lib.org/\')\"',
     },
     'listrequests':{
-        'url_rewrite': 'Parameters passed to str.replace(), in order to create the r= part of bitcoin: URIs. Example: \"(\'file:///var/www/\',\'https://electrum.org/\')\"',
+        'url_rewrite': 'Parameters passed to str.replace(), in order to create the r= part of bitcoin: URIs. Example: \"(\'file:///var/www/\',\'https://lib.org/\')\"',
     }
 }
 

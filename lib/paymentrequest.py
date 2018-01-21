@@ -33,18 +33,18 @@ import urllib.parse
 
 
 try:
-    from . import paymentrequest_pb2 as pb2
+    from lib import paymentrequest_pb2 as pb2
 except ImportError:
     sys.exit("Error: could not find paymentrequest_pb2.py. Create it with 'protoc --proto_path=lib/ --python_out=lib/ lib/paymentrequest.proto'")
 
-from . import bitcoin
-from . import util
-from .util import print_error, bh2u, bfh
-from . import transaction
-from . import x509
-from . import rsakey
+from lib import bitcoin
+from lib import util
+from lib.util import print_error, bh2u, bfh
+from lib import transaction
+from lib import x509
+from lib import rsakey
 
-from .bitcoin import TYPE_ADDRESS
+from lib.bitcoin import TYPE_ADDRESS
 
 REQUEST_HEADERS = {'Accept': 'application/bitcoin-paymentrequest', 'User-Agent': 'Electrum'}
 ACK_HEADERS = {'Content-Type':'application/bitcoin-payment','Accept':'application/bitcoin-paymentack','User-Agent':'Electrum'}
@@ -290,7 +290,7 @@ class PaymentRequest:
 
 
 def make_unsigned_request(req):
-    from .transaction import Transaction
+    from lib.transaction import Transaction
     addr = req['address']
     time = req.get('time', 0)
     exp = req.get('exp', 0)
@@ -381,7 +381,7 @@ def verify_cert_chain(chain):
 
 
 def check_ssl_config(config):
-    from . import pem
+    from lib import pem
     key_path = config.get('ssl_privkey')
     cert_path = config.get('ssl_chain')
     with open(key_path, 'r') as f:
@@ -403,7 +403,7 @@ def check_ssl_config(config):
     return requestor
 
 def sign_request_with_x509(pr, key_path, cert_path):
-    from . import pem
+    from lib import pem
     with open(key_path, 'r') as f:
         params = pem.parse_private_key(f.read())
         privkey = rsakey.RSAKey(*params)

@@ -53,7 +53,7 @@ class ElectrumGui:
         self.plugins = plugins
 
     def main(self):
-        from .main_window import ElectrumWindow
+        from gui.main_window import ElectrumWindow
         self.config.open_last_wallet()
         w = ElectrumWindow(config=self.config,
                            network=self.network,

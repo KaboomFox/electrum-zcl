@@ -3,14 +3,14 @@ import hashlib
 import sys
 import traceback
 
-from electrum import bitcoin
-from electrum.bitcoin import TYPE_ADDRESS, int_to_hex, var_int
-from electrum.i18n import _
-from electrum.plugins import BasePlugin
-from electrum.keystore import Hardware_KeyStore
-from electrum.transaction import Transaction
-from ..hw_wallet import HW_PluginBase
-from electrum.util import print_error, is_verbose, bfh, bh2u
+from lib import bitcoin
+from lib.bitcoin import TYPE_ADDRESS, int_to_hex, var_int
+from lib.i18n import _
+from lib.plugins import BasePlugin
+from lib.keystore import Hardware_KeyStore
+from lib.transaction import Transaction
+from plugins.hw_wallet import HW_PluginBase
+from lib.util import print_error, is_verbose, bfh, bh2u
 
 try:
     import hid

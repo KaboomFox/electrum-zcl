@@ -1,4 +1,4 @@
-from .plugin import TrezorCompatiblePlugin, TrezorCompatibleKeyStore
+from plugins.plugin import TrezorCompatiblePlugin, TrezorCompatibleKeyStore
 
 
 class TrezorKeyStore(TrezorCompatibleKeyStore):
@@ -13,7 +13,7 @@ class TrezorPlugin(TrezorCompatiblePlugin):
 
     def __init__(self, *args):
         try:
-            from . import client
+            from plugins import client
             import trezorlib
             import trezorlib.ckd_public
             import trezorlib.transport_hid

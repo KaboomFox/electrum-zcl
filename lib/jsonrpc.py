@@ -27,7 +27,7 @@ from jsonrpclib.SimpleJSONRPCServer import SimpleJSONRPCServer, SimpleJSONRPCReq
 from base64 import b64decode
 import time
 
-from . import util
+from lib import util
 
 
 class RPCAuthCredentialsInvalid(Exception):

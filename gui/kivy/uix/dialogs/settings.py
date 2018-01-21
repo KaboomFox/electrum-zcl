@@ -3,18 +3,18 @@ from kivy.factory import Factory
 from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 
-from electrum.util import base_units
-from electrum.i18n import languages
-from electrum_gui.kivy.i18n import _
-from electrum.plugins import run_hook
-from electrum import coinchooser
-from electrum.util import fee_levels
+from lib.util import base_units
+from lib.i18n import languages
+from gui.kivy.i18n import _
+from lib.plugins import run_hook
+from lib import coinchooser
+from lib.util import fee_levels
 
-from .choice_dialog import ChoiceDialog
+from gui.kivy.uix.dialogs.choice_dialog import ChoiceDialog
 
 Builder.load_string('''
 #:import partial functools.partial
-#:import _ electrum_gui.kivy.i18n._
+#:import _ gui.kivy.i18n._
 
 <SettingsDialog@Popup>
     id: settings
@@ -192,7 +192,7 @@ class SettingsDialog(Factory.Popup):
         self._proxy_dialog.open()
 
     def plugin_dialog(self, name, label, dt):
-        from .checkbox_dialog import CheckBoxDialog
+        from gui.kivy.uix.dialogs.checkbox_dialog import CheckBoxDialog
         def callback(status):
             self.plugins.enable(name) if status else self.plugins.disable(name)
             label.status = 'ON' if status else 'OFF'
@@ -211,14 +211,14 @@ class SettingsDialog(Factory.Popup):
 
     def fee_dialog(self, label, dt):
         if self._fee_dialog is None:
-            from .fee_dialog import FeeDialog
+            from gui.kivy.uix.dialogs.fee_dialog import FeeDialog
             def cb():
                 label.status = self.fee_status()
             self._fee_dialog = FeeDialog(self.app, self.config, cb)
         self._fee_dialog.open()
 
     def boolean_dialog(self, name, title, message, dt):
-        from .checkbox_dialog import CheckBoxDialog
+        from gui.kivy.uix.dialogs.checkbox_dialog import CheckBoxDialog
         CheckBoxDialog(title, message, getattr(self.app, name), lambda x: setattr(self.app, name, x)).open()
 
     def fx_status(self):
@@ -232,7 +232,7 @@ class SettingsDialog(Factory.Popup):
 
     def fx_dialog(self, label, dt):
         if self._fx_dialog is None:
-            from .fx_dialog import FxDialog
+            from gui.kivy.uix.dialogs.fx_dialog import FxDialog
             def cb():
                 label.status = self.fx_status()
             self._fx_dialog = FxDialog(self.app, self.plugins, self.config, cb)

@@ -1,4 +1,4 @@
-#!/Library/Frameworks/Python.framework/Versions/3.6/bin/python3
+#!/Library/Frameworks/Python.framework/Versions/3.6/
 # -*- mode: python -*-
 #
 # Electrum - lightweight Bitcoin client
@@ -47,7 +47,8 @@ is_local = not is_bundle and os.path.exists(os.path.join(script_dir, "electrum.d
 is_android = 'ANDROID_DATA' in os.environ
 
 # move this back to gui/kivy/__init.py once plugins are moved
-os.environ['KIVY_DATA_DIR'] = os.path.abspath(os.path.dirname(__file__)) + '/gui/kivy/data/'
+if is_android:
+    os.environ['KIVY_DATA_DIR'] = os.path.abspath(os.path.dirname(__file__)) + '/gui/kivy/data/'
 
 if is_local or is_android:
     sys.path.insert(0, os.path.join(script_dir, 'packages'))
@@ -64,6 +65,7 @@ def check_imports():
         import pbkdf2
         import google.protobuf
         import jsonrpclib
+        import urllib3
     except ImportError as e:
         sys.exit("Error: %s. Try 'sudo pip install <module-name>'"%str(e))
     # the following imports are for pyinstaller
@@ -79,25 +81,25 @@ def check_imports():
 if not is_android:
     check_imports()
 
-# load local module as electrum
-if is_local or is_android:
-    import imp
-    imp.load_module('electrum', *imp.find_module('lib'))
-    imp.load_module('electrum_gui', *imp.find_module('gui'))
-    imp.load_module('electrum_plugins', *imp.find_module('plugins'))
+# # load local module as electrum
+# if is_local or is_android:
+#     import imp
+#     imp.load_module('electrum', *imp.find_module('lib'))
+#     imp.load_module('gui', *imp.find_module('gui'))
+#     imp.load_module('lib.plugins', *imp.find_module('plugins'))
 
 
-from electrum import bitcoin
-from electrum import SimpleConfig, Network
-from electrum.wallet import Wallet, Imported_Wallet
-from electrum.storage import WalletStorage
-from electrum.util import print_msg, print_stderr, json_encode, json_decode
-from electrum.util import set_verbosity, InvalidPassword
-from electrum.commands import get_parser, known_commands, Commands, config_variables
-from electrum import daemon
-from electrum import keystore
-from electrum.mnemonic import Mnemonic
-import electrum_plugins
+from lib  import bitcoin
+from lib  import SimpleConfig, Network
+from lib.wallet import Wallet, Imported_Wallet
+from lib.storage import WalletStorage
+from lib.util import print_msg, print_stderr, json_encode, json_decode
+from lib.util import set_verbosity, InvalidPassword
+from lib.commands import get_parser, known_commands, Commands, config_variables
+from lib  import daemon
+from lib  import keystore
+from lib.mnemonic import Mnemonic
+import lib.plugins
 
 # get password routine
 def prompt_password(prompt, confirm=True):
@@ -292,7 +294,7 @@ def run_offline_command(config, config_options):
     return result
 
 def init_plugins(config, gui_name):
-    from electrum.plugins import Plugins
+    from lib.plugins import Plugins
     return Plugins(config, is_local or is_android, gui_name)
 
 if __name__ == '__main__':
@@ -339,14 +341,14 @@ if __name__ == '__main__':
     config_options['cwd'] = os.getcwd()
 
     # fixme: this can probably be achieved with a runtime hook (pyinstaller)
-    if is_bundle and os.path.exists(os.path.join(sys._MEIPASS, 'is_portable')):
+    if is_bundle and getattr(sys, '_MEIPASS', None) and os.path.exists(os.path.join(sys._MEIPASS, 'is_portable')):
         config_options['portable'] = True
 
     if config_options.get('portable'):
         config_options['electrum_path'] = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'electrum_data')
 
     # kivy sometimes freezes when we write to sys.stderr
-    set_verbosity(config_options.get('verbose') and config_options.get('gui')!='kivy')
+    set_verbosity(config_options.get('verbose') and config_options.get('gui') != 'kivy')
 
     # check uri
     uri = config_options.get('url')
@@ -396,7 +398,7 @@ if __name__ == '__main__':
                 d = daemon.Daemon(config, fd, False)
                 d.start()
                 if config.get('websocket_server'):
-                    from electrum import websockets
+                    from lib import websockets
                     websockets.WebSocketServer(config, d.network).start()
                 if config.get('requests_dir'):
                     path = os.path.join(config.get('requests_dir'), 'index.html')

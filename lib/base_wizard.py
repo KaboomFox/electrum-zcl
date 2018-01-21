@@ -24,11 +24,11 @@
 # SOFTWARE.
 
 import os
-from . import bitcoin
-from . import keystore
-from .keystore import bip44_derivation
-from .wallet import Imported_Wallet, Standard_Wallet, Multisig_Wallet, wallet_types
-from .i18n import _
+from lib import bitcoin
+from lib import keystore
+from lib.keystore import bip44_derivation
+from lib.wallet import Imported_Wallet, Standard_Wallet, Multisig_Wallet, wallet_types
+from lib.i18n import _
 
 
 class ScriptTypeNotSupported(Exception): pass
@@ -256,7 +256,7 @@ class BaseWizard(object):
                 # let the user choose again
 
     def on_hw_derivation(self, name, device_info, derivation):
-        from .keystore import hardware_keystore
+        from lib.keystore import hardware_keystore
         xtype = keystore.xtype_from_derivation(derivation)
         try:
             xpub = self.plugin.get_xpub(device_info.device.id_, derivation, xtype, self)
@@ -329,7 +329,7 @@ class BaseWizard(object):
     def on_keystore(self, k):
         has_xpub = isinstance(k, keystore.Xpub)
         if has_xpub:
-            from .bitcoin import xpub_type
+            from lib.bitcoin import xpub_type
             t1 = xpub_type(k.xpub)
         if self.wallet_type == 'standard':
             if has_xpub and t1 not in ['standard', 'p2wpkh', 'p2wpkh-p2sh']:
@@ -413,7 +413,7 @@ class BaseWizard(object):
     def create_standard_seed(self): self.create_seed('standard')
 
     def create_seed(self, seed_type):
-        from . import mnemonic
+        from lib import mnemonic
         self.seed_type = seed_type
         seed = mnemonic.Mnemonic('en').make_seed(self.seed_type)
         self.opt_bip39 = False

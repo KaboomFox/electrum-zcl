@@ -6,7 +6,7 @@ import queue
 from collections import namedtuple
 from functools import partial
 
-from electrum.i18n import _
+from lib.i18n import _
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
@@ -21,7 +21,7 @@ else:
 
 dialogs = []
 
-from electrum.paymentrequest import PR_UNPAID, PR_PAID, PR_EXPIRED
+from lib.paymentrequest import PR_UNPAID, PR_PAID, PR_EXPIRED
 
 pr_icons = {
     PR_UNPAID:":icons/unpaid.png",
@@ -252,7 +252,7 @@ def line_dialog(parent, title, label, ok_label, default=None):
         return txt.text()
 
 def text_dialog(parent, title, label, ok_label, default=None, allow_multi=False):
-    from .qrtextedit import ScanQRTextEdit
+    from gui.qt.qrtextedit import ScanQRTextEdit
     dialog = WindowModalDialog(parent, title)
     dialog.setMinimumWidth(500)
     l = QVBoxLayout()

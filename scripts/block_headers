@@ -4,8 +4,8 @@
 
 import sys
 import time
-from electrum import SimpleConfig, Network
-from electrum.util import print_msg, json_encode
+from lib import SimpleConfig, Network
+from lib.util import print_msg, json_encode
 
 # start network
 c = SimpleConfig()

@@ -1,0 +1,5 @@
+PyQt5
+cython
+trezor==0.7.16
+keepkey==4.0.0
+btchip-python==0.1.23

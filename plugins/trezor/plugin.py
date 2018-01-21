@@ -2,15 +2,15 @@ import threading
 
 from binascii import hexlify, unhexlify
 
-from electrum.util import bfh, bh2u
-from electrum.bitcoin import (b58_address_to_hash160, xpub_from_pubkey,
+from lib.util import bfh, bh2u
+from lib.bitcoin import (b58_address_to_hash160, xpub_from_pubkey,
                               TYPE_ADDRESS, TYPE_SCRIPT, NetworkConstants)
-from electrum.i18n import _
-from electrum.plugins import BasePlugin
-from electrum.transaction import deserialize
-from electrum.keystore import Hardware_KeyStore, is_xpubkey, parse_xpubkey
+from lib.i18n import _
+from lib.plugins import BasePlugin
+from lib.transaction import deserialize
+from lib.keystore import Hardware_KeyStore, is_xpubkey, parse_xpubkey
 
-from ..hw_wallet import HW_PluginBase
+from plugins.hw_wallet import HW_PluginBase
 
 
 # TREZOR initialization methods

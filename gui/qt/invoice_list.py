@@ -23,9 +23,9 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .util import *
-from electrum.i18n import _
-from electrum.util import format_time
+from gui.qt.util import *
+from lib.i18n import _
+from lib.util import format_time
 
 
 class InvoiceList(MyTreeWidget):

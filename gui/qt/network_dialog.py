@@ -30,11 +30,11 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 import PyQt5.QtCore as QtCore
 
-from electrum.i18n import _
-from electrum.bitcoin import NetworkConstants
-from electrum.util import print_error
+from lib.i18n import _
+from lib.bitcoin import NetworkConstants
+from lib.util import print_error
 
-from .util import *
+from gui.qt.util import *
 
 protocol_names = ['TCP', 'SSL']
 protocol_letters = 'ts'

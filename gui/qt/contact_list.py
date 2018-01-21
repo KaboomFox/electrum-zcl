@@ -24,15 +24,15 @@
 # SOFTWARE.
 import webbrowser
 
-from electrum.i18n import _
-from electrum.bitcoin import is_address
-from electrum.util import block_explorer_URL
-from electrum.plugins import run_hook
+from lib.i18n import _
+from lib.bitcoin import is_address
+from lib.util import block_explorer_URL
+from lib.plugins import run_hook
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import (
     QAbstractItemView, QFileDialog, QMenu, QTreeWidgetItem)
-from .util import MyTreeWidget
+from gui.qt.util import MyTreeWidget
 
 
 class ContactList(MyTreeWidget):

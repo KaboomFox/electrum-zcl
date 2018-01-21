@@ -1,4 +1,4 @@
-from .plugin import KeepKeyCompatiblePlugin, KeepKeyCompatibleKeyStore
+from plugins.keepkey.plugin import KeepKeyCompatiblePlugin, KeepKeyCompatibleKeyStore
 
 
 class KeepKey_KeyStore(KeepKeyCompatibleKeyStore):
@@ -14,7 +14,7 @@ class KeepKeyPlugin(KeepKeyCompatiblePlugin):
 
     def __init__(self, *args):
         try:
-            from . import client
+            from plugins.keepkey import client
             import keepkeylib
             import keepkeylib.ckd_public
             import keepkeylib.transport_hid

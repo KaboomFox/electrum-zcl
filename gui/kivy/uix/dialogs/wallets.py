@@ -5,10 +5,10 @@ from kivy.factory import Factory
 from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 
-from electrum.util import base_units
+from lib.util import base_units
 
-from ...i18n import _
-from .label_dialog import LabelDialog
+from gui.kivy.i18n import _
+from gui.kivy.uix.dialogs.label_dialog import LabelDialog
 
 Builder.load_string('''
 #:import os os
@@ -62,4 +62,3 @@ class WalletDialog(Factory.Popup):
 
     def open_wallet(self, app):
         app.load_wallet_by_name(self.ids.wallet_selector.selection[0])
-

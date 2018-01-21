@@ -17,15 +17,15 @@ from kivy.lang import Builder
 from kivy.factory import Factory
 from kivy.utils import platform
 
-from electrum.util import profiler, parse_URI, format_time, InvalidPassword, NotEnoughFunds
-from electrum import bitcoin
-from electrum.util import timestamp_to_datetime
-from electrum.paymentrequest import PR_UNPAID, PR_PAID, PR_UNKNOWN, PR_EXPIRED
+from lib.util import profiler, parse_URI, format_time, InvalidPassword, NotEnoughFunds
+from lib import bitcoin
+from lib.util import timestamp_to_datetime
+from lib.paymentrequest import PR_UNPAID, PR_PAID, PR_UNKNOWN, PR_EXPIRED
 
-from .context_menu import ContextMenu
+from gui.qt.context_menu import ContextMenu
 
 
-from electrum_gui.kivy.i18n import _
+from gui.kivy.i18n import _
 
 class EmptyLabel(Factory.Label):
     pass
@@ -120,7 +120,7 @@ class HistoryScreen(CScreen):
         self.app.tx_dialog(tx)
 
     def label_dialog(self, obj):
-        from .dialogs.label_dialog import LabelDialog
+        from gui.qt.dialogs.label_dialog import LabelDialog
         key = obj.tx_hash
         text = self.app.wallet.get_label(key)
         def callback(text):
@@ -176,9 +176,9 @@ class SendScreen(CScreen):
     payment_request = None
 
     def set_URI(self, text):
-        import electrum
+        import lib
         try:
-            uri = electrum.util.parse_URI(text, self.app.on_pr)
+            uri = lib.util.parse_URI(text, self.app.on_pr)
         except:
             self.app.show_info(_("Not a Zclassic URI"))
             return
@@ -218,7 +218,7 @@ class SendScreen(CScreen):
             # it sould be already saved
             return
         # save address as invoice
-        from electrum.paymentrequest import make_unsigned_request, PaymentRequest
+        from lib.paymentrequest import make_unsigned_request, PaymentRequest
         req = {'address':self.screen.address, 'memo':self.screen.message}
         amount = self.app.get_amount(self.screen.amount) if self.screen.amount else 0
         req['amount'] = amount
@@ -264,7 +264,7 @@ class SendScreen(CScreen):
         message = self.screen.message
         amount = sum(map(lambda x:x[2], outputs))
         if self.app.electrum_config.get('use_rbf'):
-            from .dialogs.question import Question
+            from gui.qt.dialogs.question import Question
             d = Question(_('Should this transaction be replaceable?'), lambda b: self._do_send(amount, message, outputs, b))
             d.open()
         else:
@@ -354,7 +354,7 @@ class ReceiveScreen(CScreen):
         Clock.schedule_once(lambda dt: self.update_qr())
 
     def get_URI(self):
-        from electrum.util import create_URI
+        from lib.util import create_URI
         amount = self.screen.amount
         if amount:
             a, u = self.screen.amount.split()
@@ -469,7 +469,7 @@ class InvoicesScreen(CScreen):
         self.app.show_pr_details(pr.get_dict(), obj.status, True)
 
     def do_delete(self, obj):
-        from .dialogs.question import Question
+        from gui.qt.dialogs.question import Question
         def cb(result):
             if result:
                 self.app.wallet.invoices.remove(obj.key)
@@ -482,7 +482,7 @@ address_icon = {
     'Pending' : 'atlas://gui/kivy/theming/light/important',
     'Paid' : 'atlas://gui/kivy/theming/light/confirmed'
 }
- 
+
 class AddressScreen(CScreen):
     kvname = 'address'
     cards = {}
@@ -576,7 +576,7 @@ class AddressScreen(CScreen):
             self.app.show_addr_details(req, status)
 
     def do_delete(self, obj):
-        from .dialogs.question import Question
+        from gui.qt.dialogs.question import Question
         def cb(result):
             if result:
                 self.app.wallet.remove_payment_request(obj.address, self.app.electrum_config)

@@ -1,11 +1,11 @@
 
-from electrum.i18n import _
-from electrum.plugins import run_hook
+from lib.i18n import _
+from lib.plugins import run_hook
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import QFileDialog
 
-from .util import ButtonsTextEdit, MessageBoxMixin, ColorScheme
+from gui.gt.util import ButtonsTextEdit, MessageBoxMixin, ColorScheme
 
 
 class ShowQRTextEdit(ButtonsTextEdit):
@@ -18,7 +18,7 @@ class ShowQRTextEdit(ButtonsTextEdit):
         run_hook('show_text_edit', self)
 
     def qr_show(self):
-        from .qrcodewidget import QRDialog
+        from gui.gt.qrcodewidget import QRDialog
         try:
             s = str(self.toPlainText())
         except:
@@ -51,7 +51,7 @@ class ScanQRTextEdit(ButtonsTextEdit, MessageBoxMixin):
         self.setText(data)
 
     def qr_input(self):
-        from electrum import qrscanner, get_config
+        from lib import qrscanner, get_config
         try:
             data = qrscanner.scan_barcode(get_config().get_video_device())
         except BaseException as e:

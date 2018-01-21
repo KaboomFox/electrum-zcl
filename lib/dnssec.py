@@ -60,7 +60,7 @@ import dns.rdtypes.IN.AAAA
 
 # Pure-Python version of dns.dnssec._validate_rsig
 import ecdsa
-from . import rsakey
+from lib import rsakey
 
 
 def python_validate_rrsig(rrset, rrsig, keys, origin=None, now=None):
@@ -175,7 +175,7 @@ dns.dnssec.validate = dns.dnssec._validate
 
 
 
-from .util import print_error
+from lib.util import print_error
 
 
 # hard-coded trust anchors (root KSKs)

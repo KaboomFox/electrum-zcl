@@ -32,9 +32,9 @@ import string
 import ecdsa
 import pbkdf2
 
-from .util import print_error
-from .bitcoin import is_old_seed, is_new_seed
-from . import version
+from lib.util import print_error
+from lib.bitcoin import is_old_seed, is_new_seed
+from lib import version
 
 # http://www.asahi-net.or.jp/~ax2s-kmtn/ref/unicode/e_asia.html
 CJK_INTERVALS = [

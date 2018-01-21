@@ -25,9 +25,9 @@
 from threading import Lock
 import hashlib
 
-# from .bitcoin import Hash, hash_encode
-from .transaction import Transaction
-from .util import ThreadJob, bh2u
+# from lib.bitcoin import Hash, hash_encode
+from lib.transaction import Transaction
+from lib.util import ThreadJob, bh2u
 
 
 class Synchronizer(ThreadJob):

@@ -34,12 +34,12 @@ import socket
 import json
 
 import socks
-from . import util
-from . import bitcoin
-from .bitcoin import *
-from .interface import Connection, Interface
-from . import blockchain
-from .version import ELECTRUM_VERSION, PROTOCOL_VERSION
+from lib import util
+from lib import bitcoin
+from lib.bitcoin import *
+from lib.interface import Connection, Interface
+from lib import blockchain
+from lib.version import ELECTRUM_VERSION, PROTOCOL_VERSION
 
 
 NODES_RETRY_INTERVAL = 60
@@ -48,7 +48,7 @@ SERVER_RETRY_INTERVAL = 10
 
 def parse_servers(result):
     """ parse servers list into dict format"""
-    from .version import PROTOCOL_VERSION
+    from lib.version import PROTOCOL_VERSION
     servers = {}
     for item in result:
         host = item[1]
@@ -97,7 +97,7 @@ def pick_random_server(hostmap = None, protocol = 's', exclude_set = set()):
     eligible = list(set(filter_protocol(hostmap, protocol)) - exclude_set)
     return random.choice(eligible) if eligible else None
 
-from .simple_config import SimpleConfig
+from lib.simple_config import SimpleConfig
 
 proxy_modes = ['socks4', 'socks5', 'http']
 

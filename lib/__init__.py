@@ -1,15 +1,15 @@
-from .version import ELECTRUM_VERSION
-from .util import format_satoshis, print_msg, print_error, set_verbosity
-from .wallet import Synchronizer, Wallet
-from .storage import WalletStorage
-from .coinchooser import COIN_CHOOSERS
-from .network import Network, pick_random_server
-from .interface import Connection, Interface
-from .simple_config import SimpleConfig, get_config, set_config
-from . import bitcoin
-from . import transaction
-from . import daemon
-from . import equihash
-from .transaction import Transaction
-from .plugins import BasePlugin
-from .commands import Commands, known_commands
+from lib.version import ELECTRUM_VERSION
+from lib.util import format_satoshis, print_msg, print_error, set_verbosity
+from lib.wallet import Synchronizer, Wallet
+from lib.storage import WalletStorage
+from lib.coinchooser import COIN_CHOOSERS
+from lib.network import Network, pick_random_server
+from lib.interface import Connection, Interface
+from lib.simple_config import SimpleConfig, get_config, set_config
+from lib import bitcoin
+from lib import transaction
+from lib import daemon
+from lib import equihash
+from lib.transaction import Transaction
+from lib.plugins import BasePlugin
+from lib.commands import Commands, known_commands

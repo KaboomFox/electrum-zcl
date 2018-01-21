@@ -10,53 +10,28 @@ for i, x in enumerate(sys.argv):
 else:
     raise BaseException('no version')
 
-home = '/Users/voegtlin/electrum/'
+import os
+home = os.getcwd()
 block_cipher=None
 
-# see https://github.com/pyinstaller/pyinstaller/issues/2005
-hiddenimports = []
-hiddenimports += collect_submodules('trezorlib')
-hiddenimports += collect_submodules('btchip')
-hiddenimports += collect_submodules('keepkeylib')
-
 datas = [
-    (home+'lib/currencies.json', 'electrum'),
-    (home+'lib/servers.json', 'electrum'),
-    (home+'lib/checkpoints.json', 'electrum'),
-    (home+'lib/servers_testnet.json', 'electrum'),
-    (home+'lib/checkpoints_testnet.json', 'electrum'),
-    (home+'lib/wordlist/english.txt', 'electrum/wordlist'),
-    (home+'lib/locale', 'electrum/locale'),
-    (home+'plugins', 'electrum_plugins'),
+(home+'lib/currencies.json', 'lib'),
+(home+'lib/servers.json', 'lib'),
+(home+'lib/checkpoints.json', 'lib'),
+(home+'lib/servers_testnet.json', 'lib'),
+(home+'lib/checkpoints_testnet.json', 'lib'),
+(home+'lib/wordlist/english.txt', 'lib/wordlist'),
 ]
-datas += collect_data_files('trezorlib')
-datas += collect_data_files('btchip')
-datas += collect_data_files('keepkeylib')
 
 # We don't put these files in to actually include them in the script but to make the Analysis method scan them for imports
-a = Analysis([home+'electrum',
-              home+'gui/qt/main_window.py',
-              home+'gui/text.py',
-              home+'lib/util.py',
-              home+'lib/wallet.py',
-              home+'lib/simple_config.py',
-              home+'lib/bitcoin.py',
-              home+'lib/dnssec.py',
-              home+'lib/commands.py',
-              home+'plugins/cosigner_pool/qt.py',
-              home+'plugins/email_requests/qt.py',
-              home+'plugins/trezor/client.py',
-              home+'plugins/trezor/qt.py',
-              home+'plugins/keepkey/qt.py',
-              home+'plugins/ledger/qt.py',
-              ],
+a = Analysis([home+'electrum-mac'],
              datas=datas,
-             hiddenimports=hiddenimports,
+             hiddenimports=[],
              hookspath=[])
 
 # http://stackoverflow.com/questions/19055089/pyinstaller-onefile-warning-pyconfig-h-when-importing-scipy-or-scipy-signal
 for d in a.datas:
-    if 'pyconfig' in d[0]: 
+    if 'pyconfig' in d[0]:
         a.datas.remove(d)
         break
 
@@ -82,4 +57,3 @@ app = BUNDLE(exe,
                  'NSHighResolutionCapable':'True'
              }
 )
-

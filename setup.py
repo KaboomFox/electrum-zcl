@@ -2,7 +2,7 @@
 
 # python setup.py sdist --format=zip,gztar
 
-from setuptools import setup
+from setuptools import setup, find_packages
 import os
 import sys
 import platform
@@ -48,29 +48,7 @@ setup(
         'PySocks>=1.6.6',
         'PyQt5'
     ],
-    packages=[
-        'electrum',
-        'electrum_gui',
-        'electrum_gui.qt',
-        'electrum_plugins',
-        'electrum_plugins.audio_modem',
-        'electrum_plugins.cosigner_pool',
-        'electrum_plugins.email_requests',
-        'electrum_plugins.greenaddress_instant',
-        'electrum_plugins.hw_wallet',
-        'electrum_plugins.keepkey',
-        'electrum_plugins.labels',
-        'electrum_plugins.ledger',
-        'electrum_plugins.trezor',
-        'electrum_plugins.digitalbitbox',
-        'electrum_plugins.trustedcoin',
-        'electrum_plugins.virtualkeyboard',
-    ],
-    package_dir={
-        'electrum': 'lib',
-        'electrum_gui': 'gui',
-        'electrum_plugins': 'plugins',
-    },
+    packages= find_packages(),
     package_data={
         'electrum': [
             'servers.json',

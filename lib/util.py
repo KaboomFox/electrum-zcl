@@ -30,7 +30,7 @@ import urllib
 import threading
 import hmac
 
-from .i18n import _
+from lib.i18n import _
 
 
 import urllib.request, urllib.parse, urllib.error
@@ -66,7 +66,7 @@ class UserCancelled(Exception):
 
 class MyEncoder(json.JSONEncoder):
     def default(self, obj):
-        from .transaction import Transaction
+        from lib.transaction import Transaction
         if isinstance(obj, Transaction):
             return obj.as_dict()
         return super(MyEncoder, self).default(obj)
@@ -233,7 +233,7 @@ def android_data_dir():
     return PythonActivity.mActivity.getFilesDir().getPath() + '/data'
 
 def android_headers_dir():
-    d = android_ext_dir() + '/org.electrum.electrum'
+    d = android_ext_dir() + '/org.lib.electrum'
     if not os.path.exists(d):
         os.mkdir(d)
     return d
@@ -447,7 +447,7 @@ testnet_block_explorers = {
 }
 
 def block_explorer_info():
-    from . import bitcoin
+    from lib import bitcoin
     return testnet_block_explorers if bitcoin.NetworkConstants.TESTNET else mainnet_block_explorers
 
 def block_explorer(config):
@@ -471,8 +471,8 @@ def block_explorer_URL(config, kind, item):
 #urldecode = lambda x: _ud.sub(lambda m: chr(int(m.group(1), 16)), x)
 
 def parse_URI(uri, on_pr=None):
-    from . import bitcoin
-    from .bitcoin import COIN
+    from lib import bitcoin
+    from lib.bitcoin import COIN
 
     if ':' not in uri:
         if not bitcoin.is_address(uri):
@@ -524,7 +524,7 @@ def parse_URI(uri, on_pr=None):
     name = out.get('name')
     if on_pr and (r or (name and sig)):
         def get_payment_request_thread():
-            from . import paymentrequest as pr
+            from lib import paymentrequest as pr
             if name and sig:
                 s = pr.serialize_request(out).SerializeToString()
                 request = pr.PaymentRequest(s)
@@ -540,7 +540,7 @@ def parse_URI(uri, on_pr=None):
 
 
 def create_URI(addr, amount, message):
-    from . import bitcoin
+    from lib import bitcoin
     if not bitcoin.is_address(addr):
         return ""
     query = []
@@ -685,5 +685,3 @@ class QueuePipe:
     def send_all(self, requests):
         for request in requests:
             self.send(request)
-
-

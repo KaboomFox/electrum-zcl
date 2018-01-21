@@ -1,6 +1,6 @@
-from electrum.plugins import hook
-from .keepkey import KeepKeyPlugin
-from ..hw_wallet import CmdLineHandler
+from lib.plugins import hook
+from plugins.keepkey.keepkey import KeepKeyPlugin
+from plugins.hw_wallet import CmdLineHandler
 
 class Plugin(KeepKeyPlugin):
     handler = CmdLineHandler()

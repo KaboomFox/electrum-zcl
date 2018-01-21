@@ -1,5 +1,5 @@
-from ..trezor.qt_generic import QtPlugin
-from .trezor import TrezorPlugin
+from plugins.trezor.qt_generic import QtPlugin
+from plugins.trezor.trezor import TrezorPlugin
 
 
 class Plugin(TrezorPlugin, QtPlugin):

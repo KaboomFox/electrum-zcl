@@ -1,13 +1,11 @@
-import threading
-
 from PyQt5.Qt import QInputDialog, QLineEdit, QVBoxLayout, QLabel
 
-from electrum.i18n import _
-from electrum.plugins import hook
-from electrum.wallet import Standard_Wallet
-from .ledger import LedgerPlugin
-from ..hw_wallet.qt import QtHandlerBase, QtPluginBase
-from electrum_gui.qt.util import *
+from lib.i18n import _
+from lib.plugins import hook
+from lib.wallet import Standard_Wallet
+from plugins.ledger.ledger import LedgerPlugin
+from plugins.hw_wallet.qt import QtHandlerBase, QtPluginBase
+from gui.qt.util import *
 
 #from btchip.btchipPersoWizard import StartBTChipPersoDialog
 
@@ -44,7 +42,7 @@ class Ledger_Handler(QtHandlerBase):
         else:
             self.word = str(response[0])
         self.done.set()
-    
+
     def message_dialog(self, msg):
         self.clear_dialog()
         self.dialog = dialog = WindowModalDialog(self.top_level_window(), _("Ledger Status"))
@@ -55,7 +53,7 @@ class Ledger_Handler(QtHandlerBase):
 
     def auth_dialog(self, data):
         try:
-            from .auth2fa import LedgerAuthDialog
+            from plugins.ledger.auth2fa import LedgerAuthDialog
         except ImportError as e:
             self.message_dialog(str(e))
             return
@@ -63,25 +61,19 @@ class Ledger_Handler(QtHandlerBase):
         dialog.exec_()
         self.word = dialog.pin
         self.done.set()
-                    
+
     def get_auth(self, data):
         self.done.clear()
         self.auth_signal.emit(data)
         self.done.wait()
         return self.word
-        
+
     def get_setup(self):
         self.done.clear()
         self.setup_signal.emit()
         self.done.wait()
-        return 
-        
+        return
+
     def setup_dialog(self):
         dialog = StartBTChipPersoDialog()
         dialog.exec_()
-
-
-        
-        
-        
-        

@@ -1,6 +1,6 @@
-from electrum.plugins import hook
-from .ledger import LedgerPlugin
-from ..hw_wallet import CmdLineHandler
+from lib.plugins import hook
+from plugins.ledger.ledger import LedgerPlugin
+from plugins.hw_wallet import CmdLineHandler
 
 class Plugin(LedgerPlugin):
     handler = CmdLineHandler()

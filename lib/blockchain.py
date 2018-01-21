@@ -25,12 +25,12 @@ import threading
 import struct
 from io import BytesIO
 
-from . import util
-from . import bitcoin
-from .bitcoin import *
+from lib import util
+from lib import bitcoin
+from lib.bitcoin import *
 import base64
 
-from .equihash import is_gbp_valid
+from lib.equihash import is_gbp_valid
 import logging
 logging.basicConfig(level=logging.INFO)
 

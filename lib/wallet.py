@@ -41,27 +41,27 @@ from numbers import Number
 
 import sys
 
-from .i18n import _
-from .util import (NotEnoughFunds, PrintError, UserCancelled, profiler,
+from lib.i18n import _
+from lib.util import (NotEnoughFunds, PrintError, UserCancelled, profiler,
                    format_satoshis, NoDynamicFeeEstimates)
 
-from .bitcoin import *
-from .version import *
-from .keystore import load_keystore, Hardware_KeyStore
-from .storage import multisig_type
+from lib.bitcoin import *
+from lib.version import *
+from lib.keystore import load_keystore, Hardware_KeyStore
+from lib.storage import multisig_type
 
-from . import transaction
-from .transaction import Transaction
-from .plugins import run_hook
-from . import bitcoin
-from . import coinchooser
-from .synchronizer import Synchronizer
-from .verifier import SPV
+from lib import transaction
+from lib.transaction import Transaction
+from lib.plugins import run_hook
+from lib import bitcoin
+from lib import coinchooser
+from lib.synchronizer import Synchronizer
+from lib.verifier import SPV
 
-from . import paymentrequest
-from .paymentrequest import PR_PAID, PR_UNPAID, PR_UNKNOWN, PR_EXPIRED
-from .paymentrequest import InvoiceStore
-from .contacts import Contacts
+from lib import paymentrequest
+from lib.paymentrequest import PR_PAID, PR_UNPAID, PR_UNKNOWN, PR_EXPIRED
+from lib.paymentrequest import InvoiceStore
+from lib.contacts import Contacts
 
 TX_STATUS = [
     _('Replaceable'),
@@ -831,7 +831,7 @@ class Abstract_Wallet(PrintError):
         return ''
 
     def get_tx_status(self, tx_hash, height, conf, timestamp):
-        from .util import format_time
+        from lib.util import format_time
         if conf == 0:
             tx = self.transactions.get(tx_hash)
             if not tx:
@@ -1879,4 +1879,3 @@ class Wallet(object):
         if wallet_type in wallet_constructors:
             return wallet_constructors[wallet_type]
         raise RuntimeError("Unknown wallet type: " + wallet_type)
-

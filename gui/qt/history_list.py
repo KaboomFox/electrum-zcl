@@ -25,10 +25,10 @@
 
 import webbrowser
 
-from .util import *
-from electrum.i18n import _
-from electrum.util import block_explorer_URL
-from electrum.util import timestamp_to_datetime, profiler
+from gui.qt.util import *
+from lib.i18n import _
+from lib.util import block_explorer_URL
+from lib.util import timestamp_to_datetime, profiler
 
 
 TX_ICONS = [

@@ -4,13 +4,13 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QVBoxLayout)
 
-from electrum.plugins import hook
-from electrum.i18n import _
-from electrum_gui.qt import EnterButton
-from electrum_gui.qt.util import ThreadedButton, Buttons
-from electrum_gui.qt.util import WindowModalDialog, OkButton
+from lib.plugins import hook
+from lib.i18n import _
+from gui.qt import EnterButton
+from gui.qt.util import ThreadedButton, Buttons
+from gui.qt.util import WindowModalDialog, OkButton
 
-from .labels import LabelsPlugin
+from plugins.labels.labels import LabelsPlugin
 
 
 class QLabelsSignalObject(QObject):

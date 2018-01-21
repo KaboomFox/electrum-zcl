@@ -8,15 +8,15 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from electrum import Wallet, WalletStorage
-from electrum.util import UserCancelled, InvalidPassword
-from electrum.base_wizard import BaseWizard
-from electrum.i18n import _
+from lib import Wallet, WalletStorage
+from lib.util import UserCancelled, InvalidPassword
+from lib.base_wizard import BaseWizard
+from lib.i18n import _
 
-from .seed_dialog import SeedLayout, KeysLayout
-from .network_dialog import NetworkChoiceLayout
-from .util import *
-from .password_dialog import PasswordLayout, PW_NEW
+from gui.qt.seed_dialog import SeedLayout, KeysLayout
+from gui.qt.network_dialog import NetworkChoiceLayout
+from gui.qt.util import *
+from gui.qt.password_dialog import PasswordLayout, PW_NEW
 
 
 class GoBack(Exception):
@@ -147,7 +147,7 @@ class InstallWizard(QDialog, MessageBoxMixin, BaseWizard):
         hbox.setStretchFactor(scroll, 1)
         outer_vbox.addLayout(hbox)
         outer_vbox.addLayout(Buttons(self.back_button, self.next_button))
-        self.set_icon(':icons/electrum.png')
+        self.set_icon(':icons/lib.png')
         self.show()
         self.raise_()
         self.refresh_gui()  # Need for QT on MacOSX.  Lame.

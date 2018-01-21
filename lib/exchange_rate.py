@@ -7,9 +7,9 @@ import time
 import csv
 from decimal import Decimal
 
-from .bitcoin import COIN
-from .i18n import _
-from .util import PrintError, ThreadJob
+from lib.bitcoin import COIN
+from lib.i18n import _
+from lib.util import PrintError, ThreadJob
 
 
 # See https://en.wikipedia.org/wiki/ISO_4217

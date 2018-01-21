@@ -31,10 +31,10 @@ import pkgutil
 import time
 import threading
 
-from .util import print_error
-from .i18n import _
-from .util import profiler, PrintError, DaemonThread, UserCancelled, ThreadJob
-from . import bitcoin
+from lib.util import print_error
+from lib.i18n import _
+from lib.util import profiler, PrintError, DaemonThread, UserCancelled, ThreadJob
+from lib import bitcoin
 
 plugin_loaders = {}
 hook_names = set()
@@ -48,9 +48,9 @@ class Plugins(DaemonThread):
         DaemonThread.__init__(self)
         if is_local:
             find = imp.find_module('plugins')
-            plugins = imp.load_module('electrum_plugins', *find)
+            plugins = imp.load_module('lib.plugins', *find)
         else:
-            plugins = __import__('electrum_plugins')
+            plugins = __import__('lib.plugins')
         self.pkgpath = os.path.dirname(plugins.__file__)
         self.config = config
         self.hw_wallets = {}
@@ -95,7 +95,7 @@ class Plugins(DaemonThread):
     def load_plugin(self, name):
         if name in self.plugins:
             return self.plugins[name]
-        full_name = 'electrum_plugins.' + name + '.' + self.gui_name
+        full_name = 'lib.plugins.' + name + '.' + self.gui_name
         loader = pkgutil.find_loader(full_name)
         if not loader:
             raise RuntimeError("%s implementation for %s plugin not found"
@@ -157,7 +157,7 @@ class Plugins(DaemonThread):
         return out
 
     def register_wallet_type(self, name, gui_good, wallet_type):
-        from .wallet import register_wallet_type, register_constructor
+        from lib.wallet import register_wallet_type, register_constructor
         self.print_error("registering wallet type", (wallet_type, name))
         def loader():
             plugin = self.get_plugin(name)
@@ -166,7 +166,7 @@ class Plugins(DaemonThread):
         plugin_loaders[wallet_type] = loader
 
     def register_keystore(self, name, gui_good, details):
-        from .keystore import register_keystore
+        from lib.keystore import register_keystore
         def dynamic_constructor(d):
             return self.get_plugin(name).keystore_class(d)
         if details[0] == 'hardware':

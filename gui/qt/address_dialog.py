@@ -23,15 +23,15 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from electrum.i18n import _
+from lib.i18n import _
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from .util import *
-from .history_list import HistoryList
-from .qrtextedit import ShowQRTextEdit
+from gui.qt.util import *
+from gui.qt.history_list import HistoryList
+from gui.qt.qrtextedit import ShowQRTextEdit
 
 
 class AddressDialog(WindowModalDialog):

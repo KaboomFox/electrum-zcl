@@ -33,10 +33,10 @@ import struct
 import ecdsa
 import pyaes
 
-from .util import bfh, bh2u, to_string
-from . import version
-from .util import print_error, InvalidPassword, assert_bytes, to_bytes, inv_dict
-from . import segwit_addr
+from lib.util import bfh, bh2u, to_string
+from lib import version
+from lib.util import print_error, InvalidPassword, assert_bytes, to_bytes, inv_dict
+from lib import segwit_addr
 
 def read_json(filename, default):
     path = os.path.join(os.path.dirname(__file__), filename)
@@ -87,7 +87,7 @@ class NetworkConstants:
         cls.CHECKPOINTS = read_json('checkpoints.json', [])
         cls.EQUIHASH_N = 200
         cls.EQUIHASH_K = 9
-        cls.HEADERS_URL = "https://zcl-electrum.com/blockchain_headers"
+        cls.HEADERS_URL = "https://zcl-lib.com/blockchain_headers"
 
         cls.CHUNK_SIZE = 200
 
@@ -345,14 +345,14 @@ hash_decode = lambda x: bfh(x)[::-1]
 hmac_sha_512 = lambda x, y: hmac.new(x, y, hashlib.sha512).digest()
 
 def is_new_seed(x, prefix=version.SEED_PREFIX):
-    from . import mnemonic
+    from lib import mnemonic
     x = mnemonic.normalize_text(x)
     s = bh2u(hmac_sha_512(b"Seed version", x.encode('utf8')))
     return s.startswith(prefix)
 
 
 def is_old_seed(seed):
-    from . import old_mnemonic, mnemonic
+    from lib import old_mnemonic, mnemonic
     seed = mnemonic.normalize_text(seed)
     words = seed.split()
     try:
@@ -410,7 +410,7 @@ def hash_160(public_key):
         md.update(sha256(public_key))
         return md.digest()
     except BaseException:
-        from . import ripemd
+        from lib import ripemd
         md = ripemd.new(sha256(public_key))
         return md.digest()
 
@@ -478,7 +478,7 @@ def redeem_script_to_address(txin_type, redeem_script):
 
 
 def script_to_address(script):
-    from .transaction import get_address_from_output_script
+    from lib.transaction import get_address_from_output_script
     t, addr = get_address_from_output_script(bfh(script))
     assert t == TYPE_ADDRESS
     return addr
@@ -785,7 +785,7 @@ class MyVerifyingKey(ecdsa.VerifyingKey):
     def from_signature(klass, sig, recid, h, curve):
         """ See http://www.secg.org/download/aid-780/sec1-v2.pdf, chapter 4.1.6 """
         from ecdsa import util, numbertheory
-        from . import msqr
+        from lib import msqr
         curveFp = curve.curve
         G = curve.generator
         order = G.order()

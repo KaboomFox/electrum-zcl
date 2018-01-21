@@ -37,29 +37,29 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import PyQt5.QtCore as QtCore
 
-from electrum.i18n import _, set_language
-from electrum.plugins import run_hook
-from electrum import WalletStorage
-# from electrum.synchronizer import Synchronizer
-# from electrum.verifier import SPV
-# from electrum.util import DebugMem
-from electrum.util import UserCancelled, print_error
-# from electrum.wallet import Abstract_Wallet
+from lib.i18n import _, set_language
+from lib.plugins import run_hook
+from lib import WalletStorage
+# from lib.synchronizer import Synchronizer
+# from lib.verifier import SPV
+# from lib.util import DebugMem
+from lib.util import UserCancelled, print_error
+# from lib.wallet import Abstract_Wallet
 
-from .installwizard import InstallWizard, GoBack
+from gui.qt.installwizard import InstallWizard, GoBack
 
 
 try:
-    from . import icons_rc
+    from gui.qt import icons_rc
 except Exception as e:
     print(e)
     print("Error: Could not find icons file.")
     print("Please run 'pyrcc5 icons.qrc -o gui/qt/icons_rc.py', and reinstall Electrum")
     sys.exit(1)
 
-from .util import *   # * needed for plugins
-from .main_window import ElectrumWindow
-from .network_dialog import NetworkDialog
+from gui.qt.util import *   # * needed for plugins
+from gui.qt.main_window import ElectrumWindow
+from gui.qt.network_dialog import NetworkDialog
 
 
 class OpenFileEventFilter(QObject):

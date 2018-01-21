@@ -24,8 +24,8 @@ import re
 import dns
 import json
 
-from . import bitcoin
-from . import dnssec
+from lib import bitcoin
+from lib import dnssec
 
 
 class Contacts(dict):
@@ -111,7 +111,7 @@ class Contacts(dict):
             return regex.search(haystack).groups()[0]
         except AttributeError:
             return None
-            
+
     def _validate(self, data):
         for k,v in list(data.items()):
             if k == 'contacts':
@@ -123,4 +123,3 @@ class Contacts(dict):
                 if _type != 'address':
                     data.pop(k)
         return data
-

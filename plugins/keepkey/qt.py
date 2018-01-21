@@ -1,5 +1,5 @@
-from .qt_generic import QtPlugin
-from .keepkey import KeepKeyPlugin
+from plugins.keepkey.qt_generic import QtPlugin
+from plguins.keepkey.keepkey import KeepKeyPlugin
 
 
 class Plugin(KeepKeyPlugin, QtPlugin):

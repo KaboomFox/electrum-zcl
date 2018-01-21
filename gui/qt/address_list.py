@@ -24,11 +24,11 @@
 # SOFTWARE.
 import webbrowser
 
-from .util import *
-from electrum.i18n import _
-from electrum.util import block_explorer_URL
-from electrum.plugins import run_hook
-from electrum.bitcoin import is_address
+from gui.qt.util import *
+from lib.i18n import _
+from lib.util import block_explorer_URL
+from lib.plugins import run_hook
+from lib.bitcoin import is_address
 
 
 class AddressList(MyTreeWidget):
@@ -113,7 +113,7 @@ class AddressList(MyTreeWidget):
                 self.setCurrentItem(address_item)
 
     def create_menu(self, position):
-        from electrum.wallet import Multisig_Wallet
+        from lib.wallet import Multisig_Wallet
         is_multisig = isinstance(self.wallet, Multisig_Wallet)
         can_delete = self.wallet.can_delete_address()
         selected = self.selectedItems()

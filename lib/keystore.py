@@ -26,12 +26,12 @@
 
 from unicodedata import normalize
 
-from . import bitcoin
-from .bitcoin import *
+from lib import bitcoin
+from lib.bitcoin import *
 
-from .util import PrintError, InvalidPassword, hfu
-from .mnemonic import Mnemonic, load_wordlist
-from .plugins import run_hook
+from lib.util import PrintError, InvalidPassword, hfu
+from lib.mnemonic import Mnemonic, load_wordlist
+from lib.plugins import run_hook
 
 
 class KeyStore(PrintError):
@@ -350,7 +350,7 @@ class Old_KeyStore(Deterministic_KeyStore):
         self.mpk = mpk
 
     def format_seed(self, seed):
-        from . import old_mnemonic, mnemonic
+        from lib import old_mnemonic, mnemonic
         seed = mnemonic.normalize_text(seed)
         # see if seed was entered as hex
         if seed:
@@ -366,7 +366,7 @@ class Old_KeyStore(Deterministic_KeyStore):
         return seed
 
     def get_seed(self, password):
-        from . import old_mnemonic
+        from lib import old_mnemonic
         s = self.get_hex_seed(password)
         return ' '.join(old_mnemonic.mn_encode(s))
 

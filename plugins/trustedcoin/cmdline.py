@@ -23,9 +23,9 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from electrum.i18n import _
-from electrum.plugins import hook
-from .trustedcoin import TrustedCoinPlugin
+from lib.i18n import _
+from lib.plugins import hook
+from plugins.trustedcoin import TrustedCoinPlugin
 
 class Plugin(TrustedCoinPlugin):
 
@@ -42,4 +42,3 @@ class Plugin(TrustedCoinPlugin):
             else:
                 self.print_error("twofactor: xpub3 not needed")
             wallet.auth_code = auth_code
-

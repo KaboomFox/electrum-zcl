@@ -4,7 +4,7 @@ from kivy.factory import Factory
 from kivy.properties import NumericProperty, StringProperty, BooleanProperty
 from kivy.core.window import Window
 
-from electrum_gui.kivy.i18n import _
+from gui.kivy.i18n import _
 
 
 
@@ -212,4 +212,3 @@ class OutputList(Factory.GridLayout):
         b.address = address
         b.value = self.app.format_amount_and_units(amount)
         self.add_widget(b)
-

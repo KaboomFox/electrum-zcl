@@ -28,17 +28,17 @@ import time
 
 # from jsonrpc import JSONRPCResponseManager
 import jsonrpclib
-from .jsonrpc import VerifyingJSONRPCServer
+from lib.jsonrpc import VerifyingJSONRPCServer
 
-from .version import ELECTRUM_VERSION
-from .network import Network
-from .util import json_decode, DaemonThread
-from .util import print_error, to_string
-from .wallet import Wallet
-from .storage import WalletStorage
-from .commands import known_commands, Commands
-from .simple_config import SimpleConfig
-from .exchange_rate import FxThread
+from lib.version import ELECTRUM_VERSION
+from lib.network import Network
+from lib.util import json_decode, DaemonThread
+from lib.util import print_error, to_string
+from lib.wallet import Wallet
+from lib.storage import WalletStorage
+from lib.commands import known_commands, Commands
+from lib.simple_config import SimpleConfig
+from lib.exchange_rate import FxThread
 
 
 def get_lockfile(config):
@@ -109,7 +109,7 @@ def get_rpc_credentials(config):
         config.set_key('rpcuser', rpc_user)
         config.set_key('rpcpassword', rpc_password, save=True)
     elif rpc_password == '':
-        from .util import print_stderr
+        from lib.util import print_stderr
         print_stderr('WARNING: RPC authentication is disabled.')
     return rpc_user, rpc_password
 
@@ -299,6 +299,6 @@ class Daemon(DaemonThread):
         gui_name = config.get('gui', 'qt')
         if gui_name in ['lite', 'classic']:
             gui_name = 'qt'
-        gui = __import__('electrum_gui.' + gui_name, fromlist=['electrum_gui'])
+        gui = __import__('gui.' + gui_name, fromlist=['gui'])
         self.gui = gui.ElectrumGui(config, self, plugins)
         self.gui.main()

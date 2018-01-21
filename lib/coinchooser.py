@@ -25,9 +25,9 @@
 from collections import defaultdict, namedtuple
 from math import floor, log10
 
-from .bitcoin import sha256, COIN, TYPE_ADDRESS
-from .transaction import Transaction
-from .util import NotEnoughFunds, PrintError
+from lib.bitcoin import sha256, COIN, TYPE_ADDRESS
+from lib.transaction import Transaction
+from lib.util import NotEnoughFunds, PrintError
 
 
 # A simple deterministic PRNG.  Used to deterministically shuffle a

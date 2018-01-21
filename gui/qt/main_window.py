@@ -36,31 +36,31 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from electrum.util import bh2u, bfh
+from lib.util import bh2u, bfh
 
-from electrum import keystore, simple_config
-from electrum.bitcoin import COIN, is_address, TYPE_ADDRESS, NetworkConstants
-from electrum.plugins import run_hook
-from electrum.i18n import _
-from electrum.util import (format_time, format_satoshis, PrintError,
+from lib import keystore, simple_config
+from lib.bitcoin import COIN, is_address, TYPE_ADDRESS, NetworkConstants
+from lib.plugins import run_hook
+from lib.i18n import _
+from lib.util import (format_time, format_satoshis, PrintError,
                            format_satoshis_plain, NotEnoughFunds,
                            UserCancelled, NoDynamicFeeEstimates)
-from electrum import Transaction
-from electrum import util, bitcoin, commands, coinchooser
-from electrum import paymentrequest
-from electrum.wallet import Multisig_Wallet
+from lib import Transaction
+from lib import util, bitcoin, commands, coinchooser
+from lib import paymentrequest
+from lib.wallet import Multisig_Wallet
 try:
-    from electrum.plot import plot_history
+    from lib.plot import plot_history
 except:
     plot_history = None
 
-from .amountedit import AmountEdit, BTCAmountEdit, MyLineEdit, FeerateEdit
-from .qrcodewidget import QRCodeWidget, QRDialog
-from .qrtextedit import ShowQRTextEdit, ScanQRTextEdit
-from .transaction_dialog import show_transaction
-from .fee_slider import FeeSlider
+from gui.qt.amountedit import AmountEdit, BTCAmountEdit, MyLineEdit, FeerateEdit
+from gui.qt.qrcodewidget import QRCodeWidget, QRDialog
+from gui.qt.qrtextedit import ShowQRTextEdit, ScanQRTextEdit
+from gui.qt.transaction_dialog import show_transaction
+from gui.qt.fee_slider import FeeSlider
 
-from .util import *
+from gui.qt.util import *
 
 
 class StatusBarButton(QPushButton):
@@ -82,7 +82,7 @@ class StatusBarButton(QPushButton):
             self.func()
 
 
-from electrum.paymentrequest import PR_PAID
+from lib.paymentrequest import PR_PAID
 
 
 class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
@@ -159,7 +159,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         if self.config.get("is_maximized"):
             self.showMaximized()
 
-        self.setWindowIcon(QIcon(":icons/electrum.png"))
+        self.setWindowIcon(QIcon(":icons/lib.png"))
         self.init_menubar()
 
         wrtabs = weakref.proxy(tabs)
@@ -516,9 +516,9 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
 
         help_menu = menubar.addMenu(_("&Help"))
         help_menu.addAction(_("&About"), self.show_about)
-        help_menu.addAction(_("&Official website"), lambda: webbrowser.open("http://electrum.org"))
+        help_menu.addAction(_("&Official website"), lambda: webbrowser.open("http://lib.org"))
         help_menu.addSeparator()
-        help_menu.addAction(_("&Documentation"), lambda: webbrowser.open("http://docs.electrum.org/")).setShortcut(QKeySequence.HelpContents)
+        help_menu.addAction(_("&Documentation"), lambda: webbrowser.open("http://docs.lib.org/")).setShortcut(QKeySequence.HelpContents)
         help_menu.addAction(_("&Report Bug"), self.show_report_bug)
         help_menu.addSeparator()
         help_menu.addAction(_("&Donate to server"), self.donate_to_server)
@@ -740,13 +740,13 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         self.update_completions()
 
     def create_history_tab(self):
-        from .history_list import HistoryList
+        from gui.qt.history_list import HistoryList
         self.history_list = l = HistoryList(self)
         l.searchable_list = l
         return l
 
     def show_address(self, addr):
-        from . import address_dialog
+        from gui.qt import address_dialog
         d = address_dialog.AddressDialog(self, addr)
         d.exec_()
 
@@ -824,7 +824,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
 
         self.receive_requests_label = QLabel(_('Requests'))
 
-        from .request_list import RequestList
+        from gui.qt.request_list import RequestList
         self.request_list = RequestList(self)
 
         # layout
@@ -962,7 +962,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         self.expires_combo.show()
 
     def toggle_qr_window(self):
-        from . import qrwindow
+        from gui.qt import qrwindow
         if not self.qr_window:
             self.qr_window = qrwindow.QR_Window(self)
             self.qr_window.setVisible(True)
@@ -1006,7 +1006,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         grid.setSpacing(8)
         grid.setColumnStretch(3, 1)
 
-        from .paytoedit import PayToEdit
+        from gui.qt.paytoedit import PayToEdit
         self.amount_e = BTCAmountEdit(self.get_decimal_point)
         self.payto_e = PayToEdit(self)
         msg = _('Recipient of the funds.') + '\n\n'\
@@ -1192,7 +1192,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         self.feerate_e.textChanged.connect(entry_changed)
 
         self.invoices_label = QLabel(_('Invoices'))
-        from .invoice_list import InvoiceList
+        from gui.qt.invoice_list import InvoiceList
         self.invoice_list = InvoiceList(self)
 
         vbox0 = QVBoxLayout()
@@ -1669,17 +1669,17 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         return w
 
     def create_addresses_tab(self):
-        from .address_list import AddressList
+        from gui.qt.address_list import AddressList
         self.address_list = l = AddressList(self)
         return self.create_list_tab(l, l.get_list_header())
 
     def create_utxo_tab(self):
-        from .utxo_list import UTXOList
+        from gui.qt.utxo_list import UTXOList
         self.utxo_list = l = UTXOList(self)
         return self.create_list_tab(l)
 
     def create_contacts_tab(self):
-        from .contact_list import ContactList
+        from gui.qt.contact_list import ContactList
         self.contact_list = l = ContactList(self)
         return self.create_list_tab(l)
 
@@ -1797,7 +1797,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
             self.payment_request_error()
 
     def create_console_tab(self):
-        from .console import Console
+        from gui.qt.console import Console
         self.console = console = Console()
         return console
 
@@ -1860,7 +1860,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         self.send_button.setVisible(not self.wallet.is_watching_only())
 
     def change_password_dialog(self):
-        from .password_dialog import ChangePasswordDialog
+        from gui.qt.password_dialog import ChangePasswordDialog
         d = ChangePasswordDialog(self, self.wallet)
         ok, password, new_password, encrypt_file = d.run()
         if not ok:
@@ -1976,7 +1976,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         except BaseException as e:
             self.show_error(str(e))
             return
-        from .seed_dialog import SeedDialog
+        from gui.qt.seed_dialog import SeedDialog
         d = SeedDialog(self, seed, passphrase)
         d.exec_()
 
@@ -2154,13 +2154,13 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         d.exec_()
 
     def password_dialog(self, msg=None, parent=None):
-        from .password_dialog import PasswordDialog
+        from gui.qt.password_dialog import PasswordDialog
         parent = parent or self
         d = PasswordDialog(parent, msg)
         return d.run()
 
     def tx_from_text(self, txt):
-        from electrum.transaction import tx_from_str
+        from lib.transaction import tx_from_str
         try:
             tx = tx_from_str(txt)
             return Transaction(tx)
@@ -2169,7 +2169,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
             return
 
     def read_tx_from_qrcode(self):
-        from electrum import qrscanner
+        from lib import qrscanner
         try:
             data = qrscanner.scan_barcode(self.config.get_video_device())
         except BaseException as e:
@@ -2201,7 +2201,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         return self.tx_from_text(file_content)
 
     def do_process_from_text(self):
-        from electrum.transaction import SerializationError
+        from lib.transaction import SerializationError
         text = text_dialog(self, _('Input raw transaction'), _("Transaction:"), _("Load transaction"))
         if not text:
             return
@@ -2213,7 +2213,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
             self.show_critical(_("Electrum was unable to deserialize the transaction:") + "\n" + str(e))
 
     def do_process_from_file(self):
-        from electrum.transaction import SerializationError
+        from lib.transaction import SerializationError
         try:
             tx = self.read_tx_from_file()
             if tx:
@@ -2222,7 +2222,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
             self.show_critical(_("Electrum was unable to deserialize the transaction:") + "\n" + str(e))
 
     def do_process_from_txid(self):
-        from electrum import transaction
+        from lib import transaction
         txid, ok = QInputDialog.getText(self, _('Lookup transaction'), _('Transaction ID') + ':')
         if ok and txid:
             txid = str(txid).strip()
@@ -2476,7 +2476,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         address_e.textChanged.connect(on_address)
         if not d.exec_():
             return
-        from electrum.wallet import sweep_preparations
+        from lib.wallet import sweep_preparations
         try:
             self.do_clear()
             coins, keypairs = sweep_preparations(get_pk(), self.network)
@@ -2549,7 +2549,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         lang_help = _('Select which language is used in the GUI (after restart).')
         lang_label = HelpLabel(_('Language') + ':', lang_help)
         lang_combo = QComboBox()
-        from electrum.i18n import languages
+        from lib.i18n import languages
         lang_combo.addItems(list(languages.values()))
         try:
             index = languages.keys().index(self.config.get("language",''))
@@ -2702,7 +2702,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         block_ex_combo.currentIndexChanged.connect(on_be)
         gui_widgets.append((block_ex_label, block_ex_combo))
 
-        from electrum import qrscanner
+        from lib import qrscanner
         system_cameras = qrscanner._find_system_cameras()
         qr_combo = QComboBox()
         qr_combo.addItem("Default","default")

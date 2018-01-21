@@ -22,8 +22,8 @@
 # ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from . import util
-from .util import profiler, bh2u
+from lib import util
+from lib.util import profiler, bh2u
 import ecdsa
 import hashlib
 
@@ -309,7 +309,7 @@ class X509(object):
 
 @profiler
 def load_certificates(ca_path):
-    from . import pem
+    from lib import pem
     ca_list = {}
     ca_keyID = {}
     # ca_path = '/tmp/tmp.txt'

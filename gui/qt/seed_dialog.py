@@ -26,10 +26,10 @@
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-from electrum.i18n import _
+from lib.i18n import _
 
-from .util import *
-from .qrtextedit import ShowQRTextEdit, ScanQRTextEdit
+from gui.qt.util import *
+from gui.qt.qrtextedit import ShowQRTextEdit, ScanQRTextEdit
 
 
 def seed_warning_msg(seed):
@@ -71,7 +71,7 @@ class SeedLayout(QVBoxLayout):
                         _('BIP39 seeds can be imported in Electrum, so that users can access funds locked in other wallets.'),
                         _('However, we do not generate BIP39 seeds, because they do not meet our safety standard.'),
                         _('BIP39 seeds do not include a version number, which compromises compatibility with future software.'),
-                        _('We do not guarantee that BIP39 imports will always be supported in Electrum.'),
+                        _('We do not guarantee that BIP39 imports will always be supported in lib.'),
                     ])
                 else:
                     msg = ''
@@ -136,14 +136,14 @@ class SeedLayout(QVBoxLayout):
         return ' '.join(text.split())
 
     def on_edit(self):
-        from electrum.bitcoin import seed_type
+        from lib.bitcoin import seed_type
         s = self.get_seed()
         b = self.is_seed(s)
         if not self.is_bip39:
             t = seed_type(s)
             label = _('Seed Type') + ': ' + t if t else ''
         else:
-            from electrum.keystore import bip39_is_checksum_valid
+            from lib.keystore import bip39_is_checksum_valid
             is_checksum, is_wordlist = bip39_is_checksum_valid(s)
             status = ('checksum: ' + ('ok' if is_checksum else 'failed')) if is_wordlist else 'unknown wordlist'
             label = 'BIP39' + ' (%s)'%status

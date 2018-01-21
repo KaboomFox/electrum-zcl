@@ -1,9 +1,11 @@
-from electrum.plugins import hook
-from .trezor import TrezorPlugin
-from ..hw_wallet import CmdLineHandler
+from lib.plugins import hook
+from plugins.trezor import TrezorPlugin
+from plugins.hw_wallet import CmdLineHandler
+
 
 class Plugin(TrezorPlugin):
     handler = CmdLineHandler()
+    
     @hook
     def init_keystore(self, keystore):
         if not isinstance(keystore, self.keystore_class):

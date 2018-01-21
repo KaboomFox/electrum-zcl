@@ -20,8 +20,8 @@
 # ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from .util import ThreadJob
-from .bitcoin import *
+from lib.util import ThreadJob
+from lib.bitcoin import *
 
 
 class SPV(ThreadJob):
