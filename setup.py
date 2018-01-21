@@ -83,7 +83,7 @@ setup(
             'locale/*/LC_MESSAGES/electrum.mo',
         ]
     },
-    scripts=['electrum'],
+    scripts=['electrum-start'],
     data_files=data_files,
     description="Lightweight Zclassic Wallet",
     author="BTCP Community",
