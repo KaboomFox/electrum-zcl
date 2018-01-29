@@ -3,13 +3,13 @@
 The Kivy GUI is used with Electrum on Android devices. To generate an APK file, follow these instructions.
 
 ## 1. Install python-for-android (p4a)
-p4a is used to package Electrum, Python, SDL and a bootstrap Java app into an APK file. 
+p4a is used to package Electrum, Python, SDL and a bootstrap Java app into an APK file.
 We patched p4a to add some functionality we need for Electrum. Until those changes are
 merged into p4a, you need to merge them locally (into the master branch):
 
 2. [kivy/python-for-android#1217](https://github.com/kivy/python-for-android/pull/1217)
 
-Something like this should work:
+Something like this should work (might need to sudo to access opt (mac)):
 
 ```sh
 cd /opt
@@ -19,6 +19,7 @@ git remote add agilewalker https://github.com/agilewalker/python-for-android
 git checkout a036f4442b6a23
 git fetch agilewalker
 git merge agilewalker/master
+sudo python3 setup.py install
 ```
 
 ## 2. Install buildozer
@@ -31,11 +32,24 @@ cd buildozer
 sudo python3 setup.py install
 ```
 
-## 3. Update the Android SDK build tools
+## 3. Install cython and kivo
+
+  pip install Kivy
+  pip install cython
+  brew install pkg-config
+  brew install libtool
+  export LIBTOOL=`which glibtool`
+  export LIBTOOLIZE=`which glibtoolize`
+
+
+## 4 Install buildozer dependency (run only the first time)
+    buildozer android debug
+
+## 5. Update the Android SDK build tools
 3.1 Start the Android SDK manager:
 
       ~/.buildozer/android/platform/android-sdk-20/tools/android
-      
+
 3.2 Check the latest SDK available and install it.
 
 3.3 Close the SDK manager.
